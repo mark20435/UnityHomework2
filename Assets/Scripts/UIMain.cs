@@ -16,9 +16,13 @@ public class UIMain : MonoBehaviour
     {
         
     }
-
+    /// <summary>
+    /// 處理按下Button的事件
+    /// </summary>
+    /// <param name="b">Button物件</param>
     public void ButtonClick(Button b)
     {
+        //如果按鈕是開始遊戲(Start)，則跳到GameScene
         if (b.name.Equals("Start"))
         {
             GameManager.Instance().ChangeScene("GameScene");
