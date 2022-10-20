@@ -8,6 +8,7 @@ public class MovePlayer : MonoBehaviour
     public float turnSpeed = 180f;
     private float horizontalValue;
     private float verticalValue;
+    public Animator animator;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,7 +20,24 @@ public class MovePlayer : MonoBehaviour
     {
         horizontalValue = Input.GetAxis("Horizontal");
         verticalValue = Input.GetAxis("Vertical");
+        AnimatorStateInfo asi = animator.GetCurrentAnimatorStateInfo(0);
 
+        if (verticalValue > 0.0f)
+        {
+            animator.SetBool("RunBool", true);
+        }
+        else
+        {
+            animator.SetBool("RunBool", false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (asi.IsName("Idle"))
+            {
+                animator.SetTrigger("Attack");
+            }
+        }
     }
 
     private void FixedUpdate()

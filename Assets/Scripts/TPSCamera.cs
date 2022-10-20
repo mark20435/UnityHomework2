@@ -28,7 +28,8 @@ public class TPSCamera : MonoBehaviour
     {
         float mX = Input.GetAxis("Mouse X");
         float mY = Input.GetAxis("Mouse Y");
-        horizontalRotateDegree = mX * cameraSensitivity;
+        //horizontalRotateDegree = mX * cameraSensitivity;
+        horizontalRotateDegree = mX;
         verticalRotateDegree += mY;
 
         if (verticalRotateDegree > 20.0f)
@@ -45,14 +46,18 @@ public class TPSCamera : MonoBehaviour
         // calculate follow position
         Vector3 horizontalVec = currentVector;
         horizontalVec.y = 0.0f;
-        Vector3 rotatedHVec = Quaternion.AngleAxis(horizontalRotateDegree, Vector3.up) * horizontalVec;
+        //Vector3 rotatedHVec = Quaternion.AngleAxis(horizontalRotateDegree, Vector3.up) * horizontalVec;
+        //鎖住滑鼠左右可以旋轉鏡頭，改為跟在人物正後方
+        Vector3 rotatedHVec = followTarget.forward;
         rotatedHVec.Normalize();
         Vector3 axis = Vector3.Cross(Vector3.up, rotatedHVec);
         Vector3 finalVec = Quaternion.AngleAxis(-verticalRotateDegree, axis) * rotatedHVec;
         followPosition = followTarget.position - finalVec * followDistance + followHeight * Vector3.up;
         
         // lerp to follow position
-        transform.position = Vector3.Lerp(transform.position, followPosition, lookSmoothTime);
+        // lookSmoothTime改為1或是取消使用Lerp，否則人物會抖動
+        //transform.position = Vector3.Lerp(transform.position, followPosition, lookSmoothTime);
+        transform.position = followPosition;
         //transform.position = Vector3.SmoothDamp(transform.position, followPosition, ref refVel, lookSmoothTime);
 
         // reset horizontal rotate degree
