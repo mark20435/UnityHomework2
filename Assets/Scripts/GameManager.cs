@@ -30,6 +30,11 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        if (mInstance != null)
+        {
+            DestroyImmediate(gameObject);
+            return;
+        }
         mInstance = this;
         DontDestroyOnLoad(gameObject);
     }
@@ -63,7 +68,6 @@ public class GameManager : MonoBehaviour
         StartCoroutine(SpawnObject(sceneName));
     }
 
-    // todo 第二次進入遊戲時再呼叫一次會出錯
     IEnumerator SpawnObject(string sceneName)
     {
         int mobCount = 0;
@@ -72,6 +76,19 @@ public class GameManager : MonoBehaviour
             mobCount = 20;
             int poolDataListCount = 4;
             int mobPerPool = mobCount / poolDataListCount;
+
+            if (poolList.Count != 0)
+            {
+                poolList.Clear();
+            }
+            if (aliveList.Count != 0)
+            {
+                aliveList.Clear();
+            }
+            if (deadList.Count != 0)
+            {
+                deadList.Clear();
+            }
             poolDataList1 = objectPool.InitObjectPoolData(npcObject, mobPerPool);
             poolDataList2 = objectPool.InitObjectPoolData(npcObject, mobPerPool);
             poolDataList3 = objectPool.InitObjectPoolData(npcObject, mobPerPool);
@@ -117,8 +134,8 @@ public class GameManager : MonoBehaviour
                     }
                     currentAliveObjectList.Add(go);
                 }
-            }
 
+            }
             //每10秒自動復活史萊姆
             TimeManager.SetTimeEvent(10, Revive);
         }
@@ -139,7 +156,7 @@ public class GameManager : MonoBehaviour
     }
 
     //復活史萊姆
-    private void Revive()
+    public void Revive()
     {
         if (deadList.Count > 0 && aliveList.Count > 0)
         {
@@ -149,7 +166,7 @@ public class GameManager : MonoBehaviour
                 List<GameObject> currentDeadObjectList = deadList[i];
                 if (currentDeadObjectList.Count > 0)
                 {
-                    for(int j = 0; j < currentDeadObjectList.Count; j++)
+                    for (int j = 0; j < currentDeadObjectList.Count; j++)
                     {
                         currentDeadObjectList[j].SetActive(true);
                         currentAliveObjectList.Add(currentDeadObjectList[j]);

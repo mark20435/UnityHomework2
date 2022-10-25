@@ -45,6 +45,7 @@ public class UIGame : MonoBehaviour
             result.SetActive(true);
             score.gameObject.SetActive(false);
             time.gameObject.SetActive(false);
+            GameManager.Instance().Revive();
         }
     }
 

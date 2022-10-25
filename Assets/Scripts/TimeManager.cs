@@ -14,7 +14,7 @@ public class TimeManager : MonoBehaviour
         public float nextTime;
     }
 
-    static List<TimeEvent> timeEvents = new List<TimeEvent>();
+    public static List<TimeEvent> timeEvents = new List<TimeEvent>();
 
     public static void SetTimeEvent(float freq, TimeEvent.OnTime func)
     {
@@ -34,7 +34,14 @@ public class TimeManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timeEvents.ForEach(CheckTime);
+        if (UIGame.Instance() != null && UIGame.Instance().sec == 0)
+        {
+            timeEvents.Clear();
+        }
+        if (timeEvents.Count > 0)
+        {
+            timeEvents.ForEach(CheckTime);
+        }
     }
 
     void CheckTime(TimeEvent te)
