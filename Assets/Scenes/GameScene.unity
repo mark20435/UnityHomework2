@@ -994,7 +994,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   score: {fileID: 1897362492}
   time: {fileID: 619657926}
-  sec: 10
+  sec: 60
   player: {fileID: 828022308}
   result: {fileID: 1363032420}
   resultScore: {fileID: 263390914}
