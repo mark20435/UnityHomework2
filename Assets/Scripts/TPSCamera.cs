@@ -41,7 +41,8 @@ public class TPSCamera : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
+    //LateUpdate改為FixedUpdate，處理人物用SmoothDamp就會抖動問題
+    private void FixedUpdate()
     {
         // calculate follow position
         Vector3 horizontalVec = currentVector;
@@ -55,10 +56,8 @@ public class TPSCamera : MonoBehaviour
         followPosition = followTarget.position - finalVec * followDistance + followHeight * Vector3.up;
         
         // lerp to follow position
-        // lookSmoothTime改為1或是取消使用Lerp，否則人物會抖動
         //transform.position = Vector3.Lerp(transform.position, followPosition, lookSmoothTime);
-        transform.position = followPosition;
-        //transform.position = Vector3.SmoothDamp(transform.position, followPosition, ref refVel, lookSmoothTime);
+        transform.position = Vector3.SmoothDamp(transform.position, followPosition, ref refVel, lookSmoothTime);
 
         // reset horizontal rotate degree
         horizontalRotateDegree = 0.0f;
